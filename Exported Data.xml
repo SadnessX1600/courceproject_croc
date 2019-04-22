@@ -1,0 +1,32 @@
+<Students>
+    <Student>
+        <id>1</id>
+        <name>kappa</name>
+        <speciality>
+            <id>10</id>
+            <name>ASd</name>
+            <description>asd</description>
+        </speciality>
+        <averageScore>42.3</averageScore>
+    </Student>
+    <Student>
+        <id>2</id>
+        <name>ПЕТРОВИЧ</name>
+        <speciality>
+            <id>10</id>
+            <name>fgd</name>
+            <description>asd</description>
+        </speciality>
+        <averageScore>42.3</averageScore>
+    </Student>
+    <Student>
+        <id>3</id>
+        <name>ВАСЯ</name>
+        <speciality>
+            <id>10</id>
+            <name>asdasd</name>
+            <description>asd</description>
+        </speciality>
+        <averageScore>42.3</averageScore>
+    </Student>
+</Students>
