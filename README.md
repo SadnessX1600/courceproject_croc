@@ -8,6 +8,6 @@ List of awaible commands can be shown by /help command
 referenceClassName to set referenced class (foreign key is automatically selected as referent class primary key)  
 (Table can have 1 maximum refrence)  
 
-isPrimaryKey to set field as priamary key  
+isPrimaryKey to set field as primary key  
 
 isUnique to set field as unique  
