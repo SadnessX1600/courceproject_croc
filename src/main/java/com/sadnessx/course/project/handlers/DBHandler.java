@@ -335,6 +335,10 @@ public class DBHandler {
                                                 setterRef.invoke(objRef, Integer.valueOf(referenceRS.getString(j)));
                                                 break;
                                             }
+                                            case ("integer"): {
+                                                setterRef.invoke(objRef, Integer.valueOf(referenceRS.getString(j)));
+                                                break;
+                                            }
                                             case ("string"): {
                                                 setterRef.invoke(objRef, referenceRS.getString(j));
                                                 break;
@@ -370,6 +374,10 @@ public class DBHandler {
                                 }
                                 switch (targetClassField.getType().getSimpleName().toLowerCase()) {
                                     case ("int"): {
+                                        setter.invoke(obj, Integer.valueOf(resultSet.getString(i)));
+                                        break;
+                                    }
+                                    case ("integer"): {
                                         setter.invoke(obj, Integer.valueOf(resultSet.getString(i)));
                                         break;
                                     }
