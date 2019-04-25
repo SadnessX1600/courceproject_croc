@@ -45,7 +45,7 @@ public class ConsoleApp {
                         LOGGER.info("Connected");
                         break;
                     } catch (RuntimeException e) {
-                        e.printStackTrace();
+                        LOGGER.error("Incorrect input");
                         break;
                     }
 
