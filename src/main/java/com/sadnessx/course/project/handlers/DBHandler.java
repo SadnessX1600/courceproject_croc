@@ -6,6 +6,8 @@ import com.sadnessx.course.project.annotations.GenerateTable;
 import com.sadnessx.course.project.annotations.TableField;
 import com.sadnessx.course.project.console.application.ConsoleApp;
 import com.sadnessx.course.project.entities.Student;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.reflections.Reflections;
 
 import java.beans.IntrospectionException;
@@ -22,6 +24,7 @@ public class DBHandler {
     private PreparedStatement prep;
     private HashMap<Class, String> converter = new HashMap<>();
     private Set<Class<?>> tablesSet;
+    private static Logger LOGGER = LogManager.getLogger();
 
     public DBHandler() {
         converter.put(String.class, "STRING");
@@ -40,7 +43,7 @@ public class DBHandler {
             stmt.executeUpdate("DELETE FROM " + ((GenerateTable) cls.getAnnotation(GenerateTable.class)).title() + ";");
             stmt.executeUpdate("VACUUM;");
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -48,7 +51,7 @@ public class DBHandler {
         try {
             stmt.executeUpdate("DROP TABLE IF EXISTS " + ((GenerateTable) cls.getAnnotation(GenerateTable.class)).title() + ";");
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -61,7 +64,7 @@ public class DBHandler {
             try {
                 stmt.executeUpdate("DROP TABLE IF EXISTS " + ((GenerateTable) cls.getAnnotation(GenerateTable.class)).title() + ";");
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.error(e.getSQLState());
             }
         }
         sb.append("CREATE TABLE ");
@@ -108,8 +111,9 @@ public class DBHandler {
         sb.append(");");
         try {
             stmt.executeUpdate(sb.toString());
+            LOGGER.trace(sb.toString());
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -150,6 +154,7 @@ public class DBHandler {
             }
             sb.setLength(sb.length() - 1);
             sb.append(");");
+            LOGGER.trace(sb.toString());
             prep = connection.prepareStatement(sb.toString());
             for (int i = 1; i < valueKey; i++) {
                 System.out.println("Enter " + values.get(i).get(0) + " value for " + values.get(i).get(1));
@@ -157,7 +162,7 @@ public class DBHandler {
             }
             prep.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -171,6 +176,7 @@ public class DBHandler {
             }
         }
         if (!isTableExists) {
+            LOGGER.error("Table not found");
             throw new RuntimeException("Table with defined objects not found");
         }
         int valueKey;
@@ -233,7 +239,7 @@ public class DBHandler {
                 values.clear();
             } catch (SQLException | IllegalAccessException | InvocationTargetException |
                     IntrospectionException | RuntimeException e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage());
             }
         }
     }
@@ -277,7 +283,7 @@ public class DBHandler {
                                         try {
                                             throw new NoSuchMethodException("Can't find setter method for " + obj.getClass().getSimpleName());
                                         } catch (NoSuchMethodException e1) {
-                                            e1.printStackTrace();
+                                            LOGGER.error(e1.getMessage());
                                         }
                                     }
                                 } else {
@@ -401,7 +407,7 @@ public class DBHandler {
         } catch
         (SQLException | InstantiationException | InvocationTargetException
                         | IllegalAccessException | IntrospectionException | RuntimeException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             return null;
         }
     }
@@ -424,7 +430,7 @@ public class DBHandler {
             prep.setString(1, targetValue);
             return prep.executeQuery();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             return null;
         }
     }
@@ -437,7 +443,7 @@ public class DBHandler {
             prep.setInt(1, speciality);
             return prep.executeQuery();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             return null;
         }
     }
@@ -451,7 +457,7 @@ public class DBHandler {
                     ((GenerateTable) cls.getAnnotation(GenerateTable.class)).title() + ";");
             return prep.executeQuery();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             return null;
         }
     }
@@ -469,7 +475,7 @@ public class DBHandler {
                 System.out.println();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -494,6 +500,7 @@ public class DBHandler {
             stmt = connection.createStatement();
             stmt.execute("PRAGMA foreign_keys = ON;");
         } catch (ClassNotFoundException | SQLException e) {
+            LOGGER.error(e.getMessage());
             throw new RuntimeException("Unable to connect to DB");
         }
     }
@@ -502,16 +509,17 @@ public class DBHandler {
         try {
             stmt.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
         try {
             prep.close();
         } catch (SQLException | NullPointerException e) {
+            LOGGER.error(e.getMessage() + " prepared statement wasn't opened");
         }
         try {
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
     }
 
