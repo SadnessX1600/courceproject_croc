@@ -3,6 +3,7 @@ package com.sadnessx.course.project.entities;
 import com.sadnessx.course.project.annotations.GenerateTable;
 import com.sadnessx.course.project.annotations.TableField;
 
+
 @GenerateTable(title = "specialities")
 public class StudentSpeciality {
     @TableField(isPrimaryKey = true, isUnique = true)
@@ -43,5 +44,15 @@ public class StudentSpeciality {
 
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof StudentSpeciality) {
+            return this.id == ((StudentSpeciality) obj).getId() &&
+                    this.description.equals(((StudentSpeciality) obj).getDescription()) &&
+                    this.name.equals(((StudentSpeciality) obj).getName());
+        }
+        return false;
     }
 }

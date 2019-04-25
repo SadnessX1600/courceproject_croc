@@ -1,7 +1,10 @@
 package com.sadnessx.course.project.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sadnessx.course.project.annotations.CustomGetter;
 import com.sadnessx.course.project.annotations.GenerateTable;
 import com.sadnessx.course.project.annotations.TableField;
+
 
 @GenerateTable(title = "students")
 public class Student {
@@ -9,7 +12,7 @@ public class Student {
     private int id;
     @TableField
     private String name;
-    @TableField(type = "STRING")
+    @TableField(type = "INTEGER", referenceClassName = "StudentSpeciality")
     private StudentSpeciality speciality;
     @TableField
     private float averageScore;
@@ -32,7 +35,7 @@ public class Student {
         this.name = name;
     }
 
-    public void setSpecility(StudentSpeciality speciality) {
+    public void setSpeciality(StudentSpeciality speciality) {
         this.speciality = speciality;
     }
 
@@ -48,6 +51,7 @@ public class Student {
         return name;
     }
 
+    @CustomGetter(getterMethodName = "getSpecialityCustom")
     public StudentSpeciality getSpeciality() {
         return speciality;
     }
@@ -56,4 +60,19 @@ public class Student {
         return averageScore;
     }
 
+    @JsonIgnore
+    public int getSpecialityCustom() {
+        return speciality.getId();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Student) {
+            return this.id == ((Student) obj).getId() && this.name.equals(((Student) obj).getName()) &&
+                    this.speciality.equals(((Student) obj).getSpeciality()) &&
+                    this.getAverageScore() == ((Student) obj).getAverageScore();
+
+        }
+        return false;
+    }
 }

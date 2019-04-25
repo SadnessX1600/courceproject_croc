@@ -1,0 +1,33 @@
+<Student>
+  <id>1</id>
+  <name>testStudent1</name>
+  <speciality>
+    <id>2</id>
+    <name>SampleSpec2</name>
+    <description>test2</description>
+  </speciality>
+  <averageScore>7.5</averageScore>
+  <specialityCustom>2</specialityCustom>
+</Student>
+<Student>
+  <id>2</id>
+  <name>testStudent2</name>
+  <speciality>
+    <id>1</id>
+    <name>SampleSpec</name>
+    <description>test1</description>
+  </speciality>
+  <averageScore>25.3</averageScore>
+  <specialityCustom>1</specialityCustom>
+</Student>
+<Student>
+  <id>3</id>
+  <name>testStudent3</name>
+  <speciality>
+    <id>2</id>
+    <name>SampleSpec2</name>
+    <description>test2</description>
+  </speciality>
+  <averageScore>15.0</averageScore>
+  <specialityCustom>2</specialityCustom>
+</Student>

@@ -1,0 +1,10 @@
+<StudentSpeciality>
+  <id>1</id>
+  <name>SampleSpec</name>
+  <description>test1</description>
+</StudentSpeciality>
+<StudentSpeciality>
+  <id>2</id>
+  <name>SampleSpec2</name>
+  <description>test2</description>
+</StudentSpeciality>

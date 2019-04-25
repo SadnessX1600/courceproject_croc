@@ -18,34 +18,32 @@ import java.util.stream.Collectors;
 public class IOHandler {
     private XmlMapper xmlMapper = new XmlMapper();
 
-    public void exportFromList(String path, ArrayList<Student> students) {
+    public void exportFromListToXml(String path, ArrayList<Object> objects) {
         xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
         StringBuilder sb = new StringBuilder();
-        for (Student student : students) {
+        for (Object object : objects) {
             try {
-                sb.append(xmlMapper.writeValueAsString(student));
+                sb.append(xmlMapper.writeValueAsString(object));
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
         }
         try (FileWriter fileWriter = new FileWriter(new File(path))) {
-            fileWriter.write("<Students>\n" + sb.toString() + "</Students>");
+            fileWriter.write(sb.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    //TODO threads
-    public ArrayList<Student> importStudentsToList(String path) {
+    public ArrayList<Object> importEntitiesToList(Class cls, String path) {
         try {
-            ArrayList<Student> studentsList = new ArrayList<>();
+            ArrayList<Object> objList = new ArrayList<>();
             String xmlString = Files.lines(Paths.get(path)).collect(Collectors.joining("\n"));
-            String[] studentsStrings = xmlString.split("</Student>");
-            studentsStrings[0] = studentsStrings[0].substring(11);
-            for (int i = 0; i < studentsStrings.length - 1; i++) {
-                studentsList.add(xmlMapper.readValue(studentsStrings[i] + "</Student>", Student.class));
+            String[] objStrings = xmlString.split("</" + cls.getSimpleName() + ">");
+            for (String objString : objStrings) {
+                objList.add(xmlMapper.readValue(objString + "</" + cls.getSimpleName() + ">", cls));
             }
-            return studentsList;
+            return objList;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
