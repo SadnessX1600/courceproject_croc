@@ -1,5 +1,5 @@
 To create and work with tables put @GenerateTable to class and @TableField annotations to methods  
-List of awaible commands can be shown by /help command  
+List of available commands can be shown by /help command  
 
 @GenerateTable must be used with title attribute to set table name    
 
