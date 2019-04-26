@@ -508,8 +508,8 @@ public class DBHandler {
     public void disconnectDB() {
         try {
             stmt.close();
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
+        } catch (SQLException | NullPointerException e) {
+            LOGGER.error(e.getMessage() + " statement wasn't opened");
         }
         try {
             prep.close();
@@ -518,8 +518,8 @@ public class DBHandler {
         }
         try {
             connection.close();
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
+        } catch (SQLException | NullPointerException e) {
+            LOGGER.error(e.getMessage() + " connection wasn't opened");
         }
     }
 
