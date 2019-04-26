@@ -44,7 +44,7 @@ public class ConsoleApp {
                         db.connectDB(cd + cmdSplitted[1]);
                         LOGGER.info("Connected");
                         break;
-                    } catch (RuntimeException e) {
+                    } catch (IndexOutOfBoundsException e) {
                         LOGGER.error("Incorrect input");
                         break;
                     }
@@ -66,6 +66,10 @@ public class ConsoleApp {
                         break;
                     } catch (IndexOutOfBoundsException e) {
                         LOGGER.error("Incorrect output");
+                        break;
+                    } catch (RuntimeException e) {
+                        LOGGER.error(e.getMessage());
+                        break;
                     }
                 }
                 case "/deleteTable": {
@@ -84,6 +88,10 @@ public class ConsoleApp {
                         break;
                     } catch (IndexOutOfBoundsException e) {
                         LOGGER.error("Incorrect input");
+                        break;
+                    } catch (RuntimeException e) {
+                        LOGGER.error(e.getMessage());
+                        break;
                     }
                 }
                 case "/clearTable": {
@@ -102,6 +110,10 @@ public class ConsoleApp {
                         break;
                     } catch (IndexOutOfBoundsException e) {
                         LOGGER.error("Incorrect input");
+                        break;
+                    } catch (RuntimeException e) {
+                        LOGGER.error(e.getMessage());
+                        break;
                     }
                 }
                 case "/importAll": {
@@ -119,8 +131,11 @@ public class ConsoleApp {
                         }
                         LOGGER.error("Defined class not found or doesn't have annotation @Generate table");
                         break;
-                    } catch (RuntimeException e) {
+                    } catch (IndexOutOfBoundsException e) {
                         LOGGER.error("Incorrect input");
+                        break;
+                    } catch (RuntimeException e) {
+                        LOGGER.error(e.getMessage());
                         break;
                     }
                 }
@@ -139,8 +154,11 @@ public class ConsoleApp {
                         }
                         LOGGER.error("Defined class not found or doesn't have annotation @Generate table");
                         break;
-                    } catch (RuntimeException e) {
+                    } catch (IndexOutOfBoundsException e) {
                         LOGGER.error("Incorrect input");
+                        break;
+                    } catch (RuntimeException e) {
+                        LOGGER.error(e.getMessage());
                         break;
                     }
                 }
@@ -159,8 +177,11 @@ public class ConsoleApp {
                         }
                         LOGGER.error("Defined class not found or doesn't have annotation @Generate table");
                         break;
-                    } catch (RuntimeException e) {
+                    } catch (IndexOutOfBoundsException e) {
                         LOGGER.error("Incorrect input");
+                        break;
+                    } catch (RuntimeException e) {
+                        LOGGER.error(e.getMessage());
                         break;
                     }
                 }
@@ -179,8 +200,11 @@ public class ConsoleApp {
                         }
                         LOGGER.error("Defined class not found or doesn't have annotation @Generate table");
                         break;
-                    } catch (RuntimeException e) {
+                    } catch (IndexOutOfBoundsException e) {
                         LOGGER.error("Incorrect input");
+                        break;
+                    } catch (RuntimeException e) {
+                        LOGGER.error(e.getMessage());
                         break;
                     }
                 }
@@ -199,8 +223,11 @@ public class ConsoleApp {
                         }
                         LOGGER.error("Defined class not found or doesn't have annotation @Generate table");
                         break;
-                    } catch (RuntimeException e) {
+                    } catch (IndexOutOfBoundsException e) {
                         LOGGER.error("Incorrect input");
+                        break;
+                    } catch (RuntimeException e) {
+                        LOGGER.error(e.getMessage());
                         break;
                     }
                 }
@@ -232,6 +259,7 @@ public class ConsoleApp {
                             "Create table /createTable Classname\n" +
                             "Delete table /deleteTable Classname\n" +
                             "Clear table /clearTable Classname\n" +
+                            "Add entity  /add Classname\n" +
                             "Import to table from xml /importAll Classname path\n" +
                             "Export from table /exportAll Classname path\n" +
                             "Find value by field /findByField Classname Fieldname value\n" +
