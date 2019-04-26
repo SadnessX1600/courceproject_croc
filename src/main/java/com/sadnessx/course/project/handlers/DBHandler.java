@@ -25,6 +25,7 @@ public class DBHandler {
     private HashMap<Class, String> converter = new HashMap<>();
     private Set<Class<?>> tablesSet;
     private static Logger LOGGER = LogManager.getLogger();
+    private boolean isOpened = false;
 
     public DBHandler() {
         converter.put(String.class, "STRING");
@@ -39,6 +40,9 @@ public class DBHandler {
     }
 
     public void clearTable(Class cls) {
+        if (!isOpened){
+            throw new RuntimeException("Connection is not opened");
+        }
         try {
             stmt.executeUpdate("DELETE FROM " + ((GenerateTable) cls.getAnnotation(GenerateTable.class)).title() + ";");
             stmt.executeUpdate("VACUUM;");
@@ -48,6 +52,9 @@ public class DBHandler {
     }
 
     public void deleteTable(Class cls) {
+        if (!isOpened){
+            throw new RuntimeException("Connection is not opened");
+        }
         try {
             stmt.executeUpdate("DROP TABLE IF EXISTS " + ((GenerateTable) cls.getAnnotation(GenerateTable.class)).title() + ";");
         } catch (SQLException e) {
@@ -59,12 +66,15 @@ public class DBHandler {
         if (!cls.isAnnotationPresent(GenerateTable.class)) {
             throw new RuntimeException("Annotation @GenerateTable not present");
         }
+        if (!isOpened){
+            throw new RuntimeException("Connection is not opened");
+        }
         StringBuilder sb = new StringBuilder();
         if (dropIfExists) {
             try {
                 stmt.executeUpdate("DROP TABLE IF EXISTS " + ((GenerateTable) cls.getAnnotation(GenerateTable.class)).title() + ";");
             } catch (SQLException e) {
-                LOGGER.error(e.getSQLState());
+                LOGGER.error(e.getMessage());
             }
         }
         sb.append("CREATE TABLE ");
@@ -167,6 +177,9 @@ public class DBHandler {
     }
 
     public void addEntitiesList(ArrayList<Object> objects) {
+        if (!isOpened){
+            throw new RuntimeException("Connection is not opened");
+        }
         Class currentClass = objects.get(0).getClass();
         boolean isTableExists = false;
         for (Class<?> aClass : tablesSet) {
@@ -246,6 +259,9 @@ public class DBHandler {
 
 
     public ArrayList<Object> getEntitiesList(Class cls) {
+        if (!isOpened){
+            throw new RuntimeException("Connection is not opened");
+        }
         ResultSet resultSet = getAllFromDB(cls);
         try {
             ResultSet referenceRS;
@@ -413,6 +429,9 @@ public class DBHandler {
     }
 
     public ResultSet findByField(Class cls, String fieldName, String targetValue) {
+        if (!isOpened){
+            throw new RuntimeException("Connection is not opened");
+        }
         try {
             if (!cls.isAnnotationPresent(GenerateTable.class)) {
                 throw new RuntimeException("Annotation @GenerateTable not present");
@@ -436,6 +455,9 @@ public class DBHandler {
     }
 
     public ResultSet calculateAverageScoreFromSpec(int speciality) {
+        if (!isOpened){
+            throw new RuntimeException("Connection is not opened");
+        }
         try {
             prep = connection.prepareStatement("SELECT avg(averageScore) FROM " +
                     Student.class.getAnnotation(GenerateTable.class).title() +
@@ -449,6 +471,9 @@ public class DBHandler {
     }
 
     public ResultSet getAllFromDB(Class cls) {
+        if (!isOpened){
+            throw new RuntimeException("Connection is not opened");
+        }
         try {
             if (!cls.isAnnotationPresent(GenerateTable.class)) {
                 throw new RuntimeException("Annotation @GenerateTable not present");
@@ -480,6 +505,9 @@ public class DBHandler {
     }
 
     private Class findTableClassByClassName(String name) {
+        if (!isOpened){
+            throw new RuntimeException("Connection is not opened");
+        }
         Iterator iter = tablesSet.iterator();
         Class currentClass;
         Class searchedClass;
@@ -499,6 +527,7 @@ public class DBHandler {
             connection = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
             stmt = connection.createStatement();
             stmt.execute("PRAGMA foreign_keys = ON;");
+            isOpened = true;
         } catch (ClassNotFoundException | SQLException e) {
             LOGGER.error(e.getMessage());
             throw new RuntimeException("Unable to connect to DB");
@@ -521,6 +550,7 @@ public class DBHandler {
         } catch (SQLException | NullPointerException e) {
             LOGGER.error(e.getMessage() + " connection wasn't opened");
         }
+        isOpened = false;
     }
 
     public Set<Class<?>> getTablesSet() {
