@@ -11,3 +11,5 @@ referenceClassName to set referenced class (foreign key is automatically selecte
 isPrimaryKey to set field as primary key  
 
 isUnique to set field as unique  
+
+@CustomGetter to get field from referenced class for table creation
